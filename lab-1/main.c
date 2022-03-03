@@ -1,58 +1,73 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
+// GLOBAL VARIABLES
 int BUFFER_SIZE = 255;
 
 typedef struct
 {
-    row_s *rows;
-    char rows_number;
+    FILE **fp;
+    int lines;
+    int characters;
+    int words;
 } block_s;
 
 typedef struct
 {
-    char *content;
-    int length;
-} row_s;
-
-typedef struct
-{
-    block_s blocks *
+    block_s **blocks;
+    int blocks_number;
 } main_table_s;
 
-void merge_files(char *a_file_path, char *b_file_path)
+int main(int argc, char **argv)
 {
-    FILE *a_fp = fopen(a_file_path, "r");
-    FILE *b_fp = fopen(b_file_path, "r");
 
-    fclose(a_fp);
-    fclose(b_fp);
-}
+    main_table_s *main_table = calloc(1, sizeof(main_table_s));
+    (*main_table).blocks = calloc(1, sizeof(block_s *));
+    (*main_table).blocks_number = 1;
 
-//
-block_s create_block(FILE fp)
-{
-    char *buffer = (char *)malloc(BUFFER_SIZE * sizeof(char));
-}
-
-void add_row(block_t block)
-
-    int main()
-{
-    FILE *fp = fopen("sample.txt", "r");
-    char buffer[50];
+    FILE *fp = fopen("./sample.txt", "r");
+    char buffer[BUFFER_SIZE];
     int lines = 0;
+    int characters = 0;
+    int words = 0;
+    int index;
+
     while (!feof(fp))
     {
-        fgets(buffer, 50, fp);
+        // reading full line
+        fgets(buffer, BUFFER_SIZE, fp);
+        index = 0;
+        while (index < BUFFER_SIZE && buffer[index] != '\n' && buffer[index] != '\0')
+        {
+            while (index < BUFFER_SIZE && buffer[index] != ' ' && buffer[index] != '\n' && buffer[index] != '\0')
+            {
+                characters++;
+                index++;
+            }
+            // checking if was ended by a space to increment number of characters of line
+            if (index < BUFFER_SIZE && buffer[index] == ' ')
+            {
+                characters++;
+            }
+            words++;
+            index++;
+        }
         lines++;
     }
 
-    char *t = "simple tekst";
-    printf("%d", strlen(t));
+    // getting back with the pointer to start of file
+    fseek(fp, 0, SEEK_SET);
 
-    printf("%d", lines);
+    block_s *block = calloc(1, sizeof(block_s));
+    (*block).lines = lines;
+    (*block).words = words;
+    (*block).characters = characters;
+    //
+    (*block).fp = calloc(1, sizeof(FILE *));
+    (*block).fp = &fp;
+    (*main_table).blocks = &block;
+    int tmp = 0;
+    fclose(*(*block).fp);
     return 0;
-    fclose(fp);
-    // return line_length(t, 0);
 }
