@@ -7,7 +7,7 @@ int BUFFER_SIZE = 255;
 
 typedef struct
 {
-    FILE **fp;
+    char **content;
     int lines;
     int characters;
     int words;
@@ -15,12 +15,12 @@ typedef struct
 
 typedef struct
 {
-    // block_s **blocks;
     int actual_block;
     int blocks_number;
     block_s **blocks;
 } main_table_s;
 
+// adding new block file
 int add_file(main_table_s *main_table, char *file_path)
 {
     (*main_table).actual_block++;
@@ -47,9 +47,9 @@ int add_file(main_table_s *main_table, char *file_path)
             if (index < BUFFER_SIZE && buffer[index] == ' ')
             {
                 characters++;
+                index++;
             }
             words++;
-            index++;
         }
         lines++;
     }
@@ -61,11 +61,72 @@ int add_file(main_table_s *main_table, char *file_path)
     (*(*main_table).blocks[(*main_table).actual_block]).lines = lines;
     (*(*main_table).blocks[(*main_table).actual_block]).words = words;
     (*(*main_table).blocks[(*main_table).actual_block]).characters = characters;
-    (*(*main_table).blocks[(*main_table).actual_block]).fp = calloc(1, sizeof(FILE *));
-    (*(*main_table).blocks[(*main_table).actual_block]).fp = &fp;
 
+    // locking memory to memorize lines
+    (*(*main_table).blocks[(*main_table).actual_block]).content = calloc(lines, sizeof(char *));
+
+    for (int i = 0; i < lines; i++)
+    {
+        (*(*main_table).blocks[(*main_table).actual_block]).content[i] = calloc(BUFFER_SIZE, sizeof(char));
+    }
+
+    for (int i = 0; i < lines; i++)
+    {
+        fgets(buffer, BUFFER_SIZE, fp);
+        memcpy((*(*main_table).blocks[(*main_table).actual_block]).content[i], buffer, BUFFER_SIZE);
+    }
+
+    fclose(fp);
     return (*main_table).actual_block;
 }
+
+// free block from memory
+void free_block_content(block_s *block)
+{
+    for (int i = 0; i < (*block).lines; i++)
+    {
+        free((*block).content[i]);
+    }
+}
+
+void remove_block(main_table_s *main_table, int index)
+{
+    free_block_content((*main_table).blocks[index]);
+    free((*main_table).blocks[index]);
+
+    // moving backward every block after this index
+    for (int i = index + 1; i < (*main_table).blocks_number; i++)
+    {
+        (*main_table).blocks[i - 1] = (*main_table).blocks[i];
+    }
+    (*main_table).blocks_number--;
+}
+
+// printing block properties
+void block_l(main_table_s *main_table, int index)
+{
+    if (index >= 0 && index < (*main_table).blocks_number)
+    {
+        printf("%d\n", (*(*main_table).blocks[index]).lines);
+    }
+}
+
+void block_w(main_table_s *main_table, int index)
+{
+    if (index >= 0 && index < (*main_table).blocks_number)
+    {
+        printf("%d\n", (*(*main_table).blocks[index]).words);
+    }
+}
+
+void block_c(main_table_s *main_table, int index)
+{
+    if (index >= 0 && index < (*main_table).blocks_number)
+    {
+        printf("%d\n", (*(*main_table).blocks[index]).characters);
+    }
+}
+//
 
 main_table_s *create_main_table(int blocks_number)
 {
@@ -86,16 +147,32 @@ main_table_s *create_main_table(int blocks_number)
 
 int main(int argc, char **argv)
 {
-    main_table_s *main_table = create_main_table(2);
+    main_table_s *main_table = create_main_table(3);
 
     char *path1 = "./sample.txt";
     char *path2 = "./sample2.txt";
+    char *path3 = "./sample3.txt";
 
-    int index = add_file(main_table, path1);
-    index = add_file(main_table, path2);
+    add_file(main_table, path1);
+    add_file(main_table, path2);
+    add_file(main_table, path3);
 
-    printf("%d\n", (*(*main_table).blocks[1]).lines);
-    printf("%d\n", (*(*main_table).blocks[0]).lines);
+    block_l(main_table, 0);
+    block_c(main_table, 0);
+    block_w(main_table, 0);
+
+    remove_block(main_table, 0);
+
+    block_l(main_table, 0);
+    block_c(main_table, 0);
+    block_w(main_table, 0);
+    remove_block(main_table, 0);
+
+    // free_block((*main_table).blocks[0]);
 
     return 0;
+}
+
+void delete_main_table(main_table_s *main_table)
+{
 }

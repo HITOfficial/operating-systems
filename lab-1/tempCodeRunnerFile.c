@@ -1,2 +1,2 @@
-(*blocks)[0]).characters = 5;
-    // ((*blocks)[1]).characters = 500;
+
+        // printf(" %d", (*(*main_table).blocks[i - 1]).lines);
