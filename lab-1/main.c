@@ -18,13 +18,13 @@ typedef struct
     // block_s **blocks;
     int actual_block;
     int blocks_number;
-    block_s ***blocks;
+    block_s **blocks;
 } main_table_s;
 
 int add_file(main_table_s *main_table, char *file_path)
 {
     (*main_table).actual_block++;
-    FILE *fp = fopen("./sample.txt", "r");
+    FILE *fp = fopen(file_path, "r");
     char buffer[BUFFER_SIZE];
     int lines = 0;
     int characters = 0;
@@ -57,16 +57,13 @@ int add_file(main_table_s *main_table, char *file_path)
     // getting back with the pointer to start of file
     fseek(fp, 0, SEEK_SET);
 
-    // connecting pointers to pointers
-    block_s *block = calloc(1, sizeof(block_s));
-    (*block).lines = lines;
-    (*block).words = words;
-    (*block).characters = characters;
-    (*block).fp = calloc(1, sizeof(FILE *));
-    (*block).fp = &fp;
+    // updating block struct values
+    (*(*main_table).blocks[(*main_table).actual_block]).lines = lines;
+    (*(*main_table).blocks[(*main_table).actual_block]).words = words;
+    (*(*main_table).blocks[(*main_table).actual_block]).characters = characters;
+    (*(*main_table).blocks[(*main_table).actual_block]).fp = calloc(1, sizeof(FILE *));
+    (*(*main_table).blocks[(*main_table).actual_block]).fp = &fp;
 
-    // memorizing in main table this block
-    (*main_table).blocks[(*main_table).actual_block] = &block;
     return (*main_table).actual_block;
 }
 
@@ -81,8 +78,9 @@ main_table_s *create_main_table(int blocks_number)
     // declaring the address of a single pointer
     for (int i = 0; i < (*main_table).blocks_number; i++)
     {
-        (*main_table).blocks[i] = calloc(1, sizeof(block_s *));
+        (*main_table).blocks[i] = calloc(1, sizeof(block_s));
     }
+
     return main_table;
 }
 
@@ -96,6 +94,8 @@ int main(int argc, char **argv)
     int index = add_file(main_table, path1);
     index = add_file(main_table, path2);
 
-    printf("%d\n", (*(*(*main_table).blocks[1])).characters);
+    printf("%d\n", (*(*main_table).blocks[1]).lines);
+    printf("%d\n", (*(*main_table).blocks[0]).lines);
+
     return 0;
 }
