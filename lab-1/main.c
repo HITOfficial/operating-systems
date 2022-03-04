@@ -89,17 +89,35 @@ void free_block_content(block_s *block)
     }
 }
 
+// removing single block
 void remove_block(main_table_s *main_table, int index)
 {
-    free_block_content((*main_table).blocks[index]);
-    free((*main_table).blocks[index]);
-
-    // moving backward every block after this index
-    for (int i = index + 1; i < (*main_table).blocks_number; i++)
+    if (index >= 0 && index < (*main_table).blocks_number)
     {
-        (*main_table).blocks[i - 1] = (*main_table).blocks[i];
+        free_block_content((*main_table).blocks[index]);
+        free((*main_table).blocks[index]);
+
+        // moving backward every block after this index
+        for (int i = index + 1; i < (*main_table).blocks_number; i++)
+        {
+            (*main_table).blocks[i - 1] = (*main_table).blocks[i];
+        }
+        (*main_table).blocks_number--;
+        (*main_table).actual_block--;
+        realloc((*main_table).blocks, sizeof(block_s *));
     }
-    (*main_table).blocks_number--;
+}
+
+// deleting main table
+void delete_main_table(main_table_s *main_table)
+{
+    // after removing block i, every block after him is changing position by one backward;
+    for (int i = 0; i < (*main_table).blocks_number; i++)
+    {
+        remove_block(main_table, 0);
+    }
+    free((*main_table).blocks);
+    free(main_table);
 }
 
 // printing block properties
@@ -157,22 +175,6 @@ int main(int argc, char **argv)
     add_file(main_table, path2);
     add_file(main_table, path3);
 
-    block_l(main_table, 0);
-    block_c(main_table, 0);
-    block_w(main_table, 0);
-
-    remove_block(main_table, 0);
-
-    block_l(main_table, 0);
-    block_c(main_table, 0);
-    block_w(main_table, 0);
-    remove_block(main_table, 0);
-
-    // free_block((*main_table).blocks[0]);
-
+    delete_main_table(main_table);
     return 0;
-}
-
-void delete_main_table(main_table_s *main_table)
-{
 }
