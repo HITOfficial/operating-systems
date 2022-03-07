@@ -1,2 +1,5 @@
+// add_file(main_table, path1);
+    // add_file(main_table, path2);
+    // add_file(main_table, path3);
 
-        // printf(" %d", (*(*main_table).blocks[i - 1]).lines);
+    // delete_main_table(main_table);
