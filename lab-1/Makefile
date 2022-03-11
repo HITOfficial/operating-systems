@@ -1,17 +1,26 @@
 # -c compile
 # - warnings
-SRC_FILES = funct.c main.c
 CFLAGS = -c -Wall
+CC = gcc
+RM = rm -f
 
 #1. compile to .o
 #2. .o to program
 
 # dependency
-link: compile
-	gcc compile -o main
 
-compile:
-	gcc $(CFLAGS) $(SRC_FILES)
+all:
+	static_lib
+
+static_lib: filelib.c main.c
+	$(CC) $(CFLAGS) filelib.c
+	ar rcs filelib.a filelib.o
+	$(CC) $(CFLAGS) main.c 
+	$(CC) main.o filelib.a -o main
+	
+shared_lib:
+	$(CC)
 
 clean:
-	rm -f *.o main
+	$(RM) main
+	$(CC) main.o -l filelib -L ./ -o main
