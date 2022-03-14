@@ -104,7 +104,7 @@ void remove_block(main_table_s *main_table, int index)
         }
         (*main_table).blocks_number--;
         (*main_table).actual_block--;
-        realloc((*main_table).blocks, sizeof(block_s *));
+        // realloc((*main_table).blocks, sizeof(block_s *));
     }
 }
 

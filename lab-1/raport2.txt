@@ -1,0 +1,12 @@
+Adding and removing small block - 10 times
+	Wall time: 0.000000 seconds
+	System time: 0.000000 seconds
+	User time: 0.000000 seconds
+Adding and removing medium block - 10 times
+	Wall time: 0.000000 seconds
+	System time: 0.000000 seconds
+	User time: 0.000000 seconds
+Adding and removing small block - 10 times
+	Wall time: 0.000000 seconds
+	System time: 0.000000 seconds
+	User time: 0.000000 seconds

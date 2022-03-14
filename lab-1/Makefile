@@ -18,9 +18,12 @@ static_lib: filelib.c main.c
 	$(CC) $(CFLAGS) main.c 
 	$(CC) main.o filelib.a -o main
 	
-shared_lib:
-	$(CC)
+dynamic_lib:
+	$(CC) -fPIC -c filelib.c
+	$(CC) -shader -fPIC -o filelib.so filelib.o
+	$(CC) $(CFLAGS) main.c 
+	$(CC) main.o main -l filelib -L' ./ -o main
+	
 
 clean:
 	$(RM) main
-	$(CC) main.o -l filelib -L ./ -o main
