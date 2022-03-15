@@ -16,13 +16,13 @@ typedef struct
     block_s **blocks;
 } main_table_s;
 
-static int add_file(main_table_s *main_table, char *file_path);
+int add_file(main_table_s *main_table, char *file_path);
 void free_block_content(block_s *block);
 void remove_block(main_table_s *main_table, int index);
-static void delete_main_table(main_table_s *main_table);
+void delete_main_table(main_table_s *main_table);
 void block_l(main_table_s *main_table, int index);
 void block_w(main_table_s *main_table, int index);
 void block_c(main_table_s *main_table, int index);
-static main_table_s *create_main_table(int blocks_number);
+main_table_s *create_main_table(int blocks_number);
 
 #endif // end of FILELIB_H

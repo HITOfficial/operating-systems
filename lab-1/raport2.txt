@@ -1,12 +1,22 @@
-Adding and removing small block - 10 times
-	Wall time: 0.000000 seconds
-	System time: 0.000000 seconds
-	User time: 0.000000 seconds
-Adding and removing medium block - 10 times
-	Wall time: 0.000000 seconds
-	System time: 0.000000 seconds
-	User time: 0.000000 seconds
-Adding and removing small block - 10 times
-	Wall time: 0.000000 seconds
-	System time: 0.000000 seconds
-	User time: 0.000000 seconds
+TESTING FILES: 9 SMALL, 9 MEDIUM, 9 LARGE
+SMALL FILES PATH 
+./small/1.txt./small/2.txt./small/3.txt./small/4.txt./small/5.txt./small/6.txt./small/7.txt./small/8.txt./small/9.txt
+MEDIUM FILES PATH 
+./medium/1.txt./medium/2.txt./medium/3.txt./medium/4.txt./medium/5.txt./medium/6.txt./medium/7.txt./medium/8.txt./medium/9.txt
+LARGE FILES PATH 
+./large/1.txt./large/2.txt./large/3.txt./large/4.txt./large/5.txt./large/6.txt./large/7.txt./large/8.txt./large/9.txt
+NUMBER OF CYCLES IN OPERATIONS ON THIS FILES 1 5 100 
+CYCLE 1 TIMES 
+ADDING ALL FILES REAL TIME: 4.000000  USER TIME: 0.000000 SYSTEM TIME: 0.000000 
+REMOVING ALL FILES 
+REAL TIME: 0.000000  USER TIME: 0.000000 SYSTEM TIME: 0.000000 
+
+CYCLE 5 TIMES 
+ADDING ALL FILES REAL TIME: 19.000000  USER TIME: 0.000000 SYSTEM TIME: 6.000000 
+REMOVING ALL FILES 
+REAL TIME: 0.000000  USER TIME: 0.000000 SYSTEM TIME: 1.000000 
+
+CYCLE 100 TIMES 
+ADDING ALL FILES REAL TIME: 353.000000  USER TIME: 36.000000 SYSTEM TIME: 137.000000 
+REMOVING ALL FILES 
+REAL TIME: 1.000000  USER TIME: 1.000000 SYSTEM TIME: 0.000000 

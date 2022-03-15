@@ -1,3 +1,4 @@
+#include "filelib.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -5,23 +6,9 @@
 // GLOBAL VARIABLES
 int BUFFER_SIZE = 255;
 
-typedef struct
-{
-    char **content;
-    int lines;
-    int characters;
-    int words;
-} block_s;
-
-typedef struct
-{
-    int actual_block;
-    int blocks_number;
-    block_s **blocks;
-} main_table_s;
 
 // adding new block file
-static int add_file(main_table_s *main_table, char *file_path)
+int add_file(main_table_s *main_table, char *file_path)
 {
     (*main_table).actual_block++;
     FILE *fp = fopen(file_path, "r");
@@ -109,7 +96,7 @@ void remove_block(main_table_s *main_table, int index)
 }
 
 // deleting main table
-static void delete_main_table(main_table_s *main_table)
+void delete_main_table(main_table_s *main_table)
 {
     // after removing block i, every block after him is changing position by one backward;
     for (int i = 0; i < (*main_table).blocks_number; i++)
@@ -146,7 +133,7 @@ void block_c(main_table_s *main_table, int index)
 }
 
 // creating empty main table
-static main_table_s *create_main_table(int blocks_number)
+main_table_s *create_main_table(int blocks_number)
 {
     main_table_s *main_table = calloc(1, sizeof(main_table_s));
     // array of pointers
