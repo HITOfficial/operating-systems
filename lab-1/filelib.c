@@ -6,7 +6,6 @@
 // GLOBAL VARIABLES
 int BUFFER_SIZE = 255;
 
-
 // adding new block file
 int add_file(main_table_s *main_table, char *file_path)
 {
@@ -91,7 +90,6 @@ void remove_block(main_table_s *main_table, int index)
         }
         (*main_table).blocks_number--;
         (*main_table).actual_block--;
-        // realloc((*main_table).blocks, sizeof(block_s *));
     }
 }
 

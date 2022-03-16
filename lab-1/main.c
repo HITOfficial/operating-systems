@@ -6,39 +6,18 @@
 #include "filepath.c"
 #include "runtests.c"
 
-
 int main(int argc, char *argv[])
 {
-    // int s = 5;
-    // int m = 1;
-    // int l = 1;
-    // int c = 5;
-
-    // not enought args to run file
-    // if (argc <5){
-    //     return 0;
-    // }
-
     int s = (int)atoi(argv[1]);
     int m = (int)atoi(argv[2]);
     int l = (int)atoi(argv[3]);
     int c = (int)atoi(argv[4]);
 
-    // int cycles[c];
-
-
-    // for(int i=5;i<argc;i++){
-    //     cycles[i] = atoi(argv[i]);
-    // }
-    
-    // for(int i=0;i<c;i++){
-    //     printf("%d",cycles[i]);
-    // }
-
     int cycles[c];
 
-    for(int i = 5; i< argc; i++) {
-        cycles[i-5] =(int)atoi(argv[i]);
+    for (int i = 5; i < argc; i++)
+    {
+        cycles[i - 5] = (int)atoi(argv[i]);
     }
 
     int counter = 0;
@@ -47,11 +26,9 @@ int main(int argc, char *argv[])
         counter += cycles[i] * (s + m + l);
     }
 
-    // FILE fp = fopen("results3a.txt", "a");
-
     main_table_s *main_table = create_main_table(counter);
 
-    runtests(main_table,cycles,s,m,l,c);
+    runtests(main_table, cycles, s, m, l, c);
 
     delete_main_table(main_table);
     return 0;

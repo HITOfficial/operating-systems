@@ -22,8 +22,8 @@ void end_clock(FILE *fpt)
            (double)(end_time - start_time),
            (double)(end_cpu.tms_utime - start_cpu.tms_utime),
            (double)(end_cpu.tms_stime - start_cpu.tms_stime));
-    fprintf(fpt,"REAL TIME: %f  USER TIME: %f SYSTEM TIME: %f \n",
-           (double)(end_time - start_time),
-           (double)(end_cpu.tms_utime - start_cpu.tms_utime),
-           (double)(end_cpu.tms_stime - start_cpu.tms_stime));
+    fprintf(fpt, "REAL TIME: %f  USER TIME: %f SYSTEM TIME: %f \n",
+            (double)(end_time - start_time),
+            (double)(end_cpu.tms_utime - start_cpu.tms_utime),
+            (double)(end_cpu.tms_stime - start_cpu.tms_stime));
 }
