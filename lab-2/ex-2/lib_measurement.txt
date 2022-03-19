@@ -1,2 +1,0 @@
-appear number: 5, appears in rows 4 
-REAL TIME: 0.000000  USER TIME: 0.000000 SYSTEM TIME: 0.000000 

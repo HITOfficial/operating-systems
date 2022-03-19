@@ -1,6 +1,10 @@
 #include <stdio.h>
 #include <sys/times.h>
 #include <time.h>
+#include <string.h>
+#include <unistd.h>
+#include <fcntl.h>
+
 
 int BUFFER_SIZE = 256;
 
@@ -31,24 +35,31 @@ char * end_clock(char str[])
 
 int main(int argc, char const *argv[])
 {
-    start_clock();
-    char path[100] = "./test_file.txt";
-    char pivot = 't';
-    char buffer[BUFFER_SIZE];
-    FILE *fp;
-    fp = fopen(path, "r");
 
-    FILE *measurement_p;
-    measurement_p = fopen("measurement.txt","w");
+    if (argc < 3) {
+        printf("to less args");
+        return 0;
+
+    }
+    char path[100];
+    strncpy(path, argv[1],100);
+
+    char pivot = argv[2][0];
+    start_clock();
+    char buffer[BUFFER_SIZE*BUFFER_SIZE];
+    int buffer_pow_2 = BUFFER_SIZE*BUFFER_SIZE;
+    int fd = open(path, O_RDONLY);
+    int measurement_fd = open("sys_measurement.txt",O_CREAT | O_WRONLY,7777);
 
     int rows_with_pivot = 0;
     int pivot_counter = 0;
-    while (!feof(fp))
+    read(fd,buffer,buffer_pow_2);
+    int eof = 0;
+    int i = 0;
+    while (i< buffer_pow_2 && buffer[i] != '\0')
     {
-        fgets(buffer, BUFFER_SIZE, fp);
-        int i = 0;
         int flag = 0;
-        while (i < 256 && buffer[i] != '\n' && buffer[i] != '\0')
+        while (i < buffer_pow_2 && buffer[i] != '\n' && buffer[i] != '\0')
         {
             if (buffer[i] == pivot)
             {
@@ -62,16 +73,17 @@ int main(int argc, char const *argv[])
             }
             i++;
         }
+        i++;
     }
     
     char str[BUFFER_SIZE];
 
     printf("appear number: %d, appears in rows %d \n",pivot_counter, rows_with_pivot);
     sprintf(str,"appear number: %d, appears in rows %d \n",pivot_counter, rows_with_pivot);
-    fwrite(str,sizeof(char),BUFFER_SIZE,measurement_p);
+    write(measurement_fd,str,strlen(str));
     end_clock(str);
-    fwrite(str,sizeof(char),BUFFER_SIZE,measurement_p);
-    fclose(fp);
-    fclose(measurement_p);
+    write(measurement_fd,str,strlen(str));
+    close(fd);
+    close(measurement_fd);
     return 0;
 }

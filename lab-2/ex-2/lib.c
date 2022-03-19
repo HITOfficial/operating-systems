@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <sys/times.h>
 #include <time.h>
+#include <string.h>
+
 
 int BUFFER_SIZE = 256;
 
@@ -31,24 +33,32 @@ char * end_clock(char str[])
 
 int main(int argc, char const *argv[])
 {
+    if (argc < 3) {
+        printf("to less args");
+        return 0;
+
+    }
+    char path[100];
+    strncpy(path, argv[1],100);
+    char pivot = argv[2][0];
     start_clock();
-    char path[100] = "./test_file.txt";
-    char pivot = 't';
-    char buffer[BUFFER_SIZE];
+    char buffer[BUFFER_SIZE*BUFFER_SIZE];
+    int buffer_pow_2 = BUFFER_SIZE * BUFFER_SIZE;
     FILE *fp;
     fp = fopen(path, "r");
 
     FILE *measurement_p;
-    measurement_p = fopen("measurement.txt","w");
+    measurement_p = fopen("lib_measurement.txt","w");
 
     int rows_with_pivot = 0;
     int pivot_counter = 0;
-    while (!feof(fp))
+    fread(buffer,sizeof(char),BUFFER_SIZE*BUFFER_SIZE,fp);
+    int eof = 0;
+    int i = 0;
+    while (i< buffer_pow_2 && buffer[i] != '\0')
     {
-        fgets(buffer, BUFFER_SIZE, fp);
-        int i = 0;
         int flag = 0;
-        while (i < 256 && buffer[i] != '\n' && buffer[i] != '\0')
+        while (i < buffer_pow_2 && buffer[i] != '\n' && buffer[i] != '\0')
         {
             if (buffer[i] == pivot)
             {
@@ -62,15 +72,16 @@ int main(int argc, char const *argv[])
             }
             i++;
         }
+        i++;
     }
     
     char str[BUFFER_SIZE];
 
     printf("appear number: %d, appears in rows %d \n",pivot_counter, rows_with_pivot);
     sprintf(str,"appear number: %d, appears in rows %d \n",pivot_counter, rows_with_pivot);
-    fwrite(str,sizeof(char),BUFFER_SIZE,measurement_p);
+    fwrite(str,sizeof(char),strlen(str),measurement_p);
     end_clock(str);
-    fwrite(str,sizeof(char),BUFFER_SIZE,measurement_p);
+    fwrite(str,sizeof(char),strlen(str),measurement_p);
     fclose(fp);
     fclose(measurement_p);
     return 0;
