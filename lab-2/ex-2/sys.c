@@ -54,7 +54,7 @@ int main(int argc, char const *argv[])
     int rows_with_pivot = 0;
     int pivot_counter = 0;
     read(fd,buffer,buffer_pow_2);
-    int eof = 0;
+    
     int i = 0;
     while (i< buffer_pow_2 && buffer[i] != '\0')
     {
