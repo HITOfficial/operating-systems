@@ -105,8 +105,8 @@ int main(int argc, char const *argv[])
         fclose(rp);
     }
     clock_t difference = clock() - start;
-    printf("TOTAL TIME: %ld INTEGRAL RESULT: %f", difference, integral_result);
-    fprintf(fp, "TOTAL TIME: %ld INTEGRAL RESULT: %f", difference, integral_result);
+    printf("PROCESSES: %d SINGLE RECTANGLE WIDTH: %f TOTAL TIME: %ld INTEGRAL RESULT: %f", n, h, difference, integral_result);
+    fprintf(fp, "PROCESSES: %d SINGLE RECTANGLE WIDTH: %f TOTAL TIME: %ld INTEGRAL RESULT: %f", n, h, difference, integral_result);
     fclose(fp);
     return 0;
 }
