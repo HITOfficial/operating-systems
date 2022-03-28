@@ -14,7 +14,7 @@ int find_pivot_in_file(char* path, char* pivot) {
     int pivot_length = strlen(pivot);
     FILE *fp = fopen(path,"r");
     char buffer[BUFFER_SIZE];
-    char tmp_pivot[BUFFER_SIZE];
+    char tmp_pivot[pivot_length+1];
     int file_with_pivot = 0;
     // comparing every [pivot length] part of line with pivot, to check if they are the same 
     int flag = 0;
@@ -24,7 +24,8 @@ int find_pivot_in_file(char* path, char* pivot) {
         while (i < BUFFER_SIZE - pivot_length && buffer[i] != '\n' && buffer[i] != '\0'){
             // index of char comparing from, number of char to compare
             strncpy(tmp_pivot,buffer+ i, pivot_length);
-            if (strcmp(pivot,tmp_pivot) == 0) {
+            // Replaced strcmp with strncmp couse of \0 at the end;
+            if (strncmp(pivot,tmp_pivot,pivot_length) == 0) {
                 flag = 1;
                 break;
             }
@@ -54,7 +55,6 @@ void list_files_find_pivot(char *dirname, char* pivot,FILE *fp,int depth, int ma
         return;
     }
 
-    struct stat buffer;
     struct dirent *entity;
 
     entity = readdir(dir);
@@ -69,20 +69,27 @@ void list_files_find_pivot(char *dirname, char* pivot,FILE *fp,int depth, int ma
             strcat(path, dirname);
             strcat(path, "/");
             strcat(path, entity->d_name);
-            stat(path, &buffer);
-            // checking if regular file
-            if (entity->d_type == 8){
-                int len = strlen(path);
-                printf("checking: %s pid: %d \n", path,getpid());
-                // checking if found pivot in file
-                if (find_pivot_in_file(path,pivot) == 1) {
-                    printf("%s \n", path);
-                    // fprintf("PID: %d  PATH: %s \n", getpid(), path);
+            // file extension 
+            char ext[10] = {0};
+            int path_len = strlen(path);
+            strncpy(ext,path+path_len-4,4);
+            if (strcmp(ext,".txt")== 0){
+                char pth[100] = {0};
+                strcpy(pth,path);
+                if (find_pivot_in_file(path,pivot)){
+                    printf("[PID]:%d path:%s \n",getpid(),path);
+                    fprintf(fp,"[PID]:%d path:%s \n",getpid(),path);
                 }
             }
             if (entity->d_type == DT_DIR && strcmp(entity->d_name, ".") != 0 && strcmp(entity->d_name, "..") != 0)
             {
-                list_files_find_pivot(path, pivot,fp,depth+1,max_depth);
+                int id = fork();
+                if (id ==0) {
+                    list_files_find_pivot(path, pivot,fp,depth+1,max_depth);
+                    while(wait(NULL) != -1);
+                    exit(0);
+                }
+                while(wait(NULL) != -1);
             }
         }
         entity = readdir(dir);
@@ -91,17 +98,26 @@ void list_files_find_pivot(char *dirname, char* pivot,FILE *fp,int depth, int ma
 }
 
 
-int main(int argc, char const *argv[])
+int main(int argc, char *argv[])
 {
-    char *pivot = "data";
-    char *path = "./t.txt";
-    char *p = ".";
+    if(argc < 4){
+        printf("to LESS ARGS");
+        return 0;
+    }
+
+    char *path = argv[1];
+    char *pivot = argv[2];
+    int depth = atoi(argv[3]);
+
     // creating 
     FILE *fp = fopen("results.txt","w+");
-        list_files_find_pivot(p,pivot,fp,0,5);
-
-    printf("%d",find_pivot_in_file(path,pivot));
-    return find_pivot_in_file(path, pivot);
+    int id = fork();
+    if(id==0){
+        list_files_find_pivot(path,pivot,fp,0,depth);
+        exit(0);
+    }
+    // waiting to end children exec
+    while(wait(NULL) != -1);
+    return 1;
 }
-
 
