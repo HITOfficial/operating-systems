@@ -1,4 +1,0 @@
-[PID]:10113 path:./t/t/t/t/t.txt 
-[PID]:10111 path:./t/t/t.txt 
-[PID]:10110 path:./t/t.txt 
-[PID]:10109 path:./t.txt 
