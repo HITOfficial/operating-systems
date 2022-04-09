@@ -13,9 +13,9 @@ void read_mails(enum sort_type opening_type)
     switch (opening_type)
     {
     case date:
-        mp = popen("mail -n", "w");
+        mp = popen("mail", "w");
     case sender:
-        mp = popen("mail -n | sort -k3d", "w");
+        mp = popen("mail | sort -k 3", "w");
     }
     fputs("exit", mp);
     pclose(mp);
