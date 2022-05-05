@@ -1,0 +1,49 @@
+2022-05-03 17:36:58 [ID]: 0  [MESSAGE]: -1493095123
+2022-05-03 19:08:37
+Client id: 0
+Message type: 5
+Message body:
+'/hit4644'
+
+2022-05-03 19:11:54
+Client id: 0
+Message type: 3
+Message body:
+'siemano'
+
+2022-05-03 19:12:07
+Client id: 0
+Message type: 5
+Message body:
+'/hit4677'
+
+2022-05-03 19:12:14
+Client id: 1
+Message type: 1
+Message body:
+'(null)'
+
+2022-05-03 19:15:43
+Client id: 0
+Message type: 5
+Message body:
+'/hit4696'
+
+2022-05-03 19:15:56
+Client id: 1
+Message type: 4
+Message body:
+'co ttam'
+
+2022-05-03 19:16:02
+Client id: 0
+Message type: 1
+Message body:
+'(null)'
+
+2022-05-03 19:18:40
+Client id: 1
+Message type: 1
+Message body:
+'(null)'
+
